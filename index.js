@@ -17,7 +17,7 @@ async function app() {
         const response = await axios.get(tickerUrl);
         const { base, quote, ask, bid } = response.data.data;
         const percentage = (Number(ask) / Number(bid)) - 1;
-        const msg = `${base}/${quote} [${percentage.toFixed(3)}%] ask: ${ask} bid: ${bid}`
+        const msg = `${base}/${quote} [${(percentage*100).toFixed(2)}%] ask: ${ask} bid: ${bid}`
         console.log(msg);
         if (percentage >= PERCENT_ALERT) telegram.sendMessage(msg);
     })
