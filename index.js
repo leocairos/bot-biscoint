@@ -1,13 +1,13 @@
 
 require('dotenv-safe').config();
-
 const axios = require("axios");
 
 const telegram = require('./telegram')
 
 const COIN_PAIRS = process.env.COIN_PAIRS.split(';');
-
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+const PERCENT_ALERT = Number(process.env.PERCENT_ALERT);
+// Ticker rate limit is 12 per minute => 1 each 5s
+const rateInterval = COIN_PAIRS.length * 5100;
 
 async function app() {
 
@@ -17,18 +17,18 @@ async function app() {
         const response = await axios.get(tickerUrl);
         const { base, quote, ask, bid } = response.data.data;
         const percentage = (Number(ask) / Number(bid)) - 1;
-        const msg = `CoindPair: ${base}/${quote} [${percentage.toFixed(3)}%] ask: ${ask} \tbid: ${bid}`
+        const msg = `${base}/${quote} [${percentage.toFixed(3)}%] ask: ${ask} bid: ${bid}`
         console.log(msg);
-        //telegram.sendMessage(msg);
-        await delay(3000);
+        if (percentage >= PERCENT_ALERT) telegram.sendMessage(msg);
     })
 }
 
 const msgLog = 
-    `App is running with Get in Biscoint API every ${process.env.GET_API_INTERVAL/1000} seconds.
+    `App is running with Get in Biscoint API every ${rateInterval/1000} seconds.
     Monitoring Coin Pairs: ${COIN_PAIRS}\n`;
 
 console.log(msgLog);
 app();
-setInterval(app, process.env.GET_API_INTERVAL || 5000);
+
+setInterval(app, rateInterval);
 
