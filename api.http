@@ -1,0 +1,14 @@
+@baseUrl = https://api.biscoint.io/v1
+#@apiKey = {{$dotenv API_KEY}}
+
+### Metadata
+GET {{baseUrl}}/meta
+
+### Fees to withdraw
+GET {{baseUrl}}/fees
+
+### Tiker
+GET {{baseUrl}}/ticker
+
+### Tiker with base and quote params
+GET {{baseUrl}}/ticker?base=ETH&quote=BRL

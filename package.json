@@ -1,0 +1,20 @@
+{
+  "name": "bot-biscoint",
+  "description": "Bot to monitoring Biscoint Coins listed",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx nodemon -r dotenv-safe/config index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Leonardo Cairo",
+    "email": "leocairos@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "dotenv-safe": "^8.2.0",
+    "telegraf": "^4.7.0"
+  }
+}

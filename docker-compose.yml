@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  node:
+    container_name: bot-biscoint
+    image: node:14
+    ports:
+      - '3022:3022'
+    volumes:
+      - ./:/srv/app
+    working_dir: /srv/app
+    command: bash -c
+      'npm install && npm start'
