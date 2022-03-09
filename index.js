@@ -35,8 +35,8 @@ function formatMsgCalc(calc){
     msg += `minutes of price change monitoring:\n`;
     calc.forEach( c => {
         msg += `  -> ${c.coinPair} avg: ${(c.avg*100).toFixed(2)}% `
-        msg += `min: ${(c.min*100).toFixed(2)} `
-        msg += `max: ${(c.max*100).toFixed(2)}\n`
+        msg += `min: ${(c.min*100).toFixed(2)}% `
+        msg += `max: ${(c.max*100).toFixed(2)}%\n`
     })
     return msg;
 }
@@ -63,7 +63,7 @@ async function app() {
         const msg = `${base}/${quote} [${(percentage*100).toFixed(2)}%] ask: ${ask} bid: ${bid}`
         console.log(msg);
         if (percentage >= PERCENT_ALERT) telegram.sendMessage(msg);
-        processPrices(coinPair, percentage);
+        if (ask && bid) processPrices(coinPair, percentage);
     })
 }
 
