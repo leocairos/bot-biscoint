@@ -8,7 +8,7 @@ Monitor and send alerts via telegram.
 * Clone this repository
 * Create your .env and fill in your information
 
-* Run byterminal
+* Run by terminal
 ```shell
 npm install
 npm start

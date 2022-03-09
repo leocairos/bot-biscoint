@@ -1,8 +1,9 @@
 
-require('dotenv-safe').config();
-import { get } from "axios";
+//require('dotenv-safe').config();
 
-import { sendMessage } from './telegram';
+const axios = require("axios");
+
+const telegram = require('./telegram')
 
 const COIN_PAIRS = process.env.COIN_PAIRS.split(';');
 const PERCENT_ALERT = Number(process.env.PERCENT_ALERT);
@@ -47,7 +48,7 @@ function processPrices(coinPair, percentage) {
     if (prices.length >= averageOf) {
         const calc = coinCalc();
         console.log(formatMsgCalc(calc));
-        sendMessage(formatMsgCalc(calc));
+        telegram.sendMessage(formatMsgCalc(calc));
         prices.length = 0;
     }
 }
@@ -57,12 +58,12 @@ async function app() {
     COIN_PAIRS.forEach(async coinPair => {
         const [baseT, quoteT] = coinPair.split('/');
         const tickerUrl = `https://api.biscoint.io/v1/ticker?base=${baseT}&quote=${quoteT}`
-        const response = await get(tickerUrl);
+        const response = await axios.get(tickerUrl);
         const { base, quote, ask, bid } = response.data.data;
         const percentage = (Number(ask) / Number(bid)) - 1;
         const msg = `${base}/${quote} [${(percentage*100).toFixed(2)}%] ask: ${ask} bid: ${bid}`
         console.log(msg);
-        if (percentage >= PERCENT_ALERT) sendMessage(msg);
+        if (percentage >= PERCENT_ALERT) telegram.sendMessage(msg);
         if (ask && bid) processPrices(coinPair, percentage);
     })
 }
